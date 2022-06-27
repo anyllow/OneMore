@@ -9,8 +9,8 @@ public class Calculator : MonoBehaviour
     public Text InputText;
     public string Values;
     private bool _isHasOperator;
-    public static bool _isHasFirstPoint;
-    public static bool _isHasSecondPoint;
+    private static bool _isHasFirstPoint;
+    private static bool _isHasSecondPoint;
 
     public void OnClickButton()
     {
@@ -41,38 +41,44 @@ public class Calculator : MonoBehaviour
     }
     public void ButtonClickPoint()
     {
-        
+
+
+        if (InputText.text == "")
         {
-            if (InputText.text == "")
-            {
-                InputText.text += "0.";
-                _isHasFirstPoint = true;
-            }
-            else if (_isHasFirstPoint && _isHasSecondPoint)
+            InputText.text += "0.";
+            _isHasFirstPoint = true;
+        }
+        else if (_isHasFirstPoint && _isHasSecondPoint)
+        {
+            InputText.text += "";
+
+        }
+        else
+        {
+            if (!_isHasFirstPoint && (InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
+                InputText.text.Contains("/")))
             {
                 InputText.text += "";
-
+                _isHasFirstPoint = true;
             }
-            else
+            else if (!_isHasFirstPoint && !(InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
+                InputText.text.Contains("/")))
             {
-                if (!_isHasFirstPoint && !(InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
-                    InputText.text.Contains("/")))
-                {
-                    InputText.text += ".";
-                    _isHasFirstPoint = true;
-                }
-                else if (InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
-                    InputText.text.Contains("/") && _isHasFirstPoint && !_isHasSecondPoint)
-                {
-                    InputText.text += ".";
-                    _isHasSecondPoint = true;
-                }
+                InputText.text += ".";
+                _isHasFirstPoint = true;
+            }
+            else if (InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
+                InputText.text.Contains("/") && _isHasFirstPoint && !_isHasSecondPoint)
+            {
+                InputText.text += ".";
+                _isHasSecondPoint = true;
             }
         }
 
+
     }
     public void ButtonClear()
-    { 
+    {
         InputText.text = "";
         _isHasFirstPoint = false;
         _isHasSecondPoint = false;
