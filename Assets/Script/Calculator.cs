@@ -8,61 +8,83 @@ public class Calculator : MonoBehaviour
 {
     public Text InputText;
     public string Values;
-    private string _temp;
-    private bool _isHaveOperator = false;
+    private bool _isHasOperator;
+    public static bool _isHasFirstPoint;
+    public static bool _isHasSecondPoint;
+
     public void OnClickButton()
     {
-        if((InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("/") ||
-            InputText.text.Contains("*") || InputText.text.Contains(".")) && _isHaveOperator)
+        if ((Values == "+" && InputText.text == "") || (Values == "-" && InputText.text == "") || (Values == "*" && InputText.text == "") ||
+            (Values == "/" && InputText.text == ""))
         {
             InputText.text += "";
-            
         }
-        else 
+
+        else if ((InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
+            InputText.text.Contains("/")) && (Values == "+" || Values == "-" || Values == "*" || Values == "/"))
         {
-            if(Values == "+" && !_isHaveOperator)
+            InputText.text += "";
+
+        }
+        else
+        {
+            if (!_isHasOperator && (Values == "+" || Values == "-" || Values == "*" || Values == "/"))
             {
                 InputText.text += Values;
-                _isHaveOperator = true;
-            }
-            else if (Values == "-" && !_isHaveOperator)
-            {
-                InputText.text += Values;
-                _isHaveOperator = true;
-            }
-            else if (Values == "*" && !_isHaveOperator)
-            {
-                InputText.text += Values;
-                _isHaveOperator = true;
-            }
-            else if (Values == "/" && !_isHaveOperator)
-            {
-                InputText.text += Values;
-                _isHaveOperator = true;
-            }
-            else if (Values == "." && !_isHaveOperator)
-            {
-                InputText.text += Values;
-                _isHaveOperator = true;
+                _isHasOperator = true;
             }
             else
             {
                 InputText.text += Values;
             }
-        } 
+        }
+    }
+    public void ButtonClickPoint()
+    {
+        
+        {
+            if (InputText.text == "")
+            {
+                InputText.text += "0.";
+                _isHasFirstPoint = true;
+            }
+            else if (_isHasFirstPoint && _isHasSecondPoint)
+            {
+                InputText.text += "";
+
+            }
+            else
+            {
+                if (!_isHasFirstPoint && !(InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
+                    InputText.text.Contains("/")))
+                {
+                    InputText.text += ".";
+                    _isHasFirstPoint = true;
+                }
+                else if (InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
+                    InputText.text.Contains("/") && _isHasFirstPoint && !_isHasSecondPoint)
+                {
+                    InputText.text += ".";
+                    _isHasSecondPoint = true;
+                }
+            }
+        }
+
     }
     public void ButtonClear()
     { 
         InputText.text = "";
-        _isHaveOperator = false;
+        _isHasFirstPoint = false;
+        _isHasSecondPoint = false;
     }
 
     public void ButtonEqual()
     {
         DataTable dt = new DataTable();
-        _temp = dt.Compute(InputText.text, "").ToString();
-        InputText.text = _temp;
-        _isHaveOperator = false;
+        InputText.text = dt.Compute(InputText.text, "").ToString();
+        _isHasOperator = false;
+        _isHasFirstPoint = false;
+        _isHasSecondPoint = false;
     }
 
 }
