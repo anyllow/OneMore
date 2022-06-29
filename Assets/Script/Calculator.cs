@@ -53,6 +53,11 @@ public class Calculator : MonoBehaviour
             InputText.text += "";
 
         }
+        else if (InputText.text.Contains(",") && !_isHasFirstPoint)
+        {
+            InputText.text += "";
+            _isHasFirstPoint = true;
+        }
         else
         {
             if (!_isHasFirstPoint && (InputText.text.Contains("+") || InputText.text.Contains("-") || InputText.text.Contains("*") ||
@@ -88,6 +93,10 @@ public class Calculator : MonoBehaviour
     {
         DataTable dt = new DataTable();
         InputText.text = dt.Compute(InputText.text, "").ToString();
+        if (InputText.text.Contains(","))
+        {
+           InputText.text = InputText.text.Replace(',', '.');
+        }
         _isHasOperator = false;
         _isHasFirstPoint = false;
         _isHasSecondPoint = false;
